@@ -1,5 +1,7 @@
 # FNote Music Player
 
+THIS IS JUST A PLACEHOLDER README
+
 FNote is a simple, lightweight, cross-platform music player built with Tauri, React, and Rust. It's designed to be a minimal application for scanning and playing local music files.
 
 ## Features
