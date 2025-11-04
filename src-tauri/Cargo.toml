@@ -1,0 +1,34 @@
+[package]
+name = "fnote"
+version = "0.0.0"
+description = "A Tauri Music Player"
+authors = ["zqil"]
+license = "MIT"
+repository = ""
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.6", features = [ "shell-open", "dialog-open" ] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.114"
+
+# For audio playback
+rodio = { version = "0.17", features = ["mp3", "flac", "wav"] }
+# For efficient directory traversal
+walkdir = "2.5.0"
+# For reading audio file metadata (tags)
+id3 = "1.1.0"
+# For calculating duration of non-mp3 files like WAV
+hound = "3.5.1"
+# For creating a unique and stable ID for tracks from their path
+blake3 = "1.5.0"
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]

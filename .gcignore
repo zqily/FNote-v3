@@ -1,0 +1,8 @@
+package-lock.json
+README.md
+tsconfig.node.json
+*.png
+*.ico
+*.svg
+public/
+Cargo.lock
