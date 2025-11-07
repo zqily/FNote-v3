@@ -1,6 +1,7 @@
 // src-tauri/src/commands/library.rs
 
 use crate::{models::Track, state::AppState};
+use id3::TagLike;
 use std::path::Path;
 use tauri::State;
 use walkdir::WalkDir;

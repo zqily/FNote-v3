@@ -7,7 +7,6 @@ mod player;
 mod state;
 
 use std::sync::mpsc;
-use tauri::Manager;
 
 fn main() {
     // Create a channel for communicating with the dedicated audio player thread.
