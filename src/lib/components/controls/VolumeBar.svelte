@@ -3,13 +3,16 @@
 	import { playerStore } from '$lib/stores/playerStore';
 	import { invoke } from '@tauri-apps/api/tauri';
 
-	let volume = 1;
-	playerStore.subscribe((state) => {
-		volume = state.volume;
-	});
+	let volume: number = $playerStore.volume;
+	let isChanging = false;
 
-	function handleVolumeChange(e: Event) {
-		invoke('set_volume', { volume: (e.currentTarget as HTMLInputElement).valueAsNumber });
+	$: if (!isChanging) {
+		volume = $playerStore.volume;
+	}
+
+	function handleVolumeChange() {
+		isChanging = false;
+		invoke('set_volume', { volume: volume });
 	}
 </script>
 
@@ -26,8 +29,8 @@
 		min="0"
 		max="1"
 		step="0.01"
-		value={volume}
-		on:input={(e) => (volume = (e.currentTarget as HTMLInputElement).valueAsNumber)}
+		bind:value={volume}
+		on:mousedown={() => (isChanging = true)}
 		on:change={handleVolumeChange}
 		class="w-24 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-white"
 	/>

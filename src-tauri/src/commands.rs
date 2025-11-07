@@ -18,7 +18,7 @@ pub async fn upload_folder(state: State<'_, Arc<Mutex<AppState>>>, app_handle: A
             .map_err(|e| e.to_string())?
             .map_err(|e| e.to_string())?;
 
-        let mut state_guard = state.lock().unwrap();
+        let mut state_guard = state.inner().lock().unwrap();
         
         // Stop playback and clear queue
         state_guard.sink.stop();
@@ -43,45 +43,45 @@ pub async fn upload_folder(state: State<'_, Arc<Mutex<AppState>>>, app_handle: A
 
 #[tauri::command]
 pub async fn play_song(id: usize, state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::play_song(id, &mut state_guard, &app_handle)
 }
 
 #[tauri::command]
 pub async fn toggle_playback(state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::toggle_playback(&mut state_guard, &app_handle);
     Ok(())
 }
 
 #[tauri::command]
 pub async fn next_song(state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::next_song(&mut state_guard, &app_handle)
 }
 
 #[tauri::command]
 pub async fn prev_song(state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::prev_song(&mut state_guard, &app_handle)
 }
 
 #[tauri::command]
 pub async fn set_volume(volume: f32, state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::set_volume(volume, &mut state_guard, &app_handle);
     Ok(())
 }
 
 #[tauri::command]
 pub async fn seek_to(position_ms: u64, state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::seek_to(position_ms, &mut state_guard, &app_handle)
 }
 
 #[tauri::command]
 pub async fn toggle_shuffle(state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
-    let mut state_guard = state.lock().unwrap();
+    let mut state_guard = state.inner().lock().unwrap();
     player::toggle_shuffle(&mut state_guard, &app_handle);
     Ok(())
 }
@@ -89,7 +89,7 @@ pub async fn toggle_shuffle(state: State<'_, Arc<Mutex<AppState>>>, app_handle: 
 #[tauri::command]
 pub async fn get_album_art(song_id: usize, state: State<'_, Arc<Mutex<AppState>>>) -> CommandResult<Option<String>> {
     let path = {
-        let state_guard = state.lock().unwrap();
+        let state_guard = state.inner().lock().unwrap();
         state_guard.songs.get(song_id).map(|s| s.path.clone())
     };
 

@@ -24,7 +24,7 @@ fn main() {
         is_shuffled: false,
         volume: 1.0,
         sink,
-        _stream,
+        stream_handle,
     };
 
     let app_state_arc = Arc::new(Mutex::new(app_state));
@@ -35,7 +35,7 @@ fn main() {
             let app_handle = app.handle();
             let state_clone = app_state_arc.clone();
 
-            tokio::spawn(async move {
+            tauri::async_runtime::spawn(async move {
                 loop {
                     tokio::time::sleep(Duration::from_millis(250)).await;
                     let mut state_guard = state_clone.lock().unwrap();
@@ -51,7 +51,7 @@ fn main() {
                             is_playing: state_guard.is_playing && !state_guard.sink.is_paused(),
                             volume: state_guard.volume,
                             is_shuffled: state_guard.is_shuffled,
-                            current_time_ms: state_guard.sink.get_pos().as_millis() as u64,
+                            current_time_ms: 0, // rodio 0.17 doesn't support get_pos on Sink
                         };
                         app_handle.emit_all("player://status-update", status).unwrap();
                     }

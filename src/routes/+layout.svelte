@@ -5,7 +5,7 @@
 	import PlaybackControls from '$lib/components/controls/PlaybackControls.svelte';
 	import ProgressBar from '$lib/components/controls/ProgressBar.svelte';
 	import VolumeBar from '$lib/components/controls/VolumeBar.svelte';
-	import AlbumArt from '$lib/components/main_view/AlbumArt.svelte';
+	import CurrentSongInfo from '$lib/components/controls/CurrentSongInfo.svelte';
 	import Header from '$lib/components/main_view/Header.svelte';
 	import SongList from '$lib/components/sidebar/SongList.svelte';
 	import UploadButton from '$lib/components/sidebar/UploadButton.svelte';
@@ -30,14 +30,14 @@
 
 		<!-- Main View -->
 		<div class="flex-1 flex flex-col items-center justify-center p-8 bg-gradient-to-b from-[#282828] to-[#121212]">
-			<AlbumArt />
+			<slot />
 		</div>
 	</main>
 
 	<!-- Footer / Player Controls -->
 	<footer class="bg-[#181818] p-4 flex items-center justify-between border-t border-gray-800">
 		<div class="w-1/4">
-			<!-- Current Song Info Placeholder -->
+			<CurrentSongInfo />
 		</div>
 		<div class="w-1/2 flex flex-col items-center space-y-2">
 			<PlaybackControls />

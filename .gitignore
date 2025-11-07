@@ -6,3 +6,6 @@ target/
 .svelte-kit/
 package-lock.json
 Cargo.lock
+favicon.ico
+converter.py
+versions/

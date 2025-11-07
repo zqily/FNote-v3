@@ -1,7 +1,8 @@
 // Handles file system operations: scanning, metadata parsing, etc.
 use crate::models::Song;
 use anyhow::Result;
-use lofty::{Probe, TaggedFileExt};
+use base64::{engine::general_purpose, Engine};
+use lofty::{Accessor, AudioFile, Probe, TaggedFileExt};
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
@@ -63,8 +64,8 @@ pub fn get_album_art_data(path_str: &str) -> Result<Option<String>> {
     let tagged_file = Probe::open(path)?.read()?;
 
     if let Some(picture) = tagged_file.primary_tag().and_then(|t| t.pictures().get(0)) {
-        let mime_type = picture.mime_type().to_string();
-        let data = base64::encode(picture.data());
+        let mime_type = picture.mime_type().map_or("image/jpeg", |m| m.as_str());
+        let data = general_purpose::STANDARD.encode(picture.data());
         let base64_string = format!("data:{};base64,{}", mime_type, data);
         return Ok(Some(base64_string));
     }

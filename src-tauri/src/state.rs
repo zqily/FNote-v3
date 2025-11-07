@@ -1,5 +1,5 @@
-use rodio::{OutputStream, Sink};
 use crate::models::Song;
+use rodio::{OutputStreamHandle, Sink};
 
 pub struct AppState {
     pub songs: Vec<Song>,
@@ -8,6 +8,5 @@ pub struct AppState {
     pub is_shuffled: bool,
     pub volume: f32,
     pub sink: Sink,
-    // Keep the stream handle to prevent it from being dropped
-    pub _stream: OutputStream, 
+    pub stream_handle: OutputStreamHandle,
 }

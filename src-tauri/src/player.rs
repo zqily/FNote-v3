@@ -7,7 +7,6 @@ use rand::seq::SliceRandom;
 use rodio::{Decoder, Sink};
 use std::fs::File;
 use std::io::BufReader;
-use std::time::Duration;
 use tauri::{AppHandle, Manager};
 
 fn emit_status_update(app_handle: &AppHandle, state: &AppState) {
@@ -17,7 +16,7 @@ fn emit_status_update(app_handle: &AppHandle, state: &AppState) {
         is_playing: state.is_playing && !state.sink.is_paused(),
         volume: state.volume,
         is_shuffled: state.is_shuffled,
-        current_time_ms: state.sink.get_pos().as_millis() as u64,
+        current_time_ms: 0, // rodio 0.17 doesn't support get_pos on Sink
     };
     app_handle.emit_all("player://status-update", status).unwrap();
 }
@@ -48,7 +47,7 @@ fn play_song_internal(id: usize, state: &mut AppState) -> Result<(), String> {
     let source = Decoder::new(BufReader::new(file)).map_err(|e| e.to_string())?;
 
     state.sink.stop();
-    let new_sink = Sink::try_new(&state.sink.stream_handle()).map_err(|e| e.to_string())?;
+    let new_sink = Sink::try_new(&state.stream_handle).map_err(|e| e.to_string())?;
     state.sink = new_sink;
     state.sink.set_volume(state.volume);
     state.sink.append(source);
@@ -152,15 +151,13 @@ pub fn set_volume(volume: f32, state: &mut AppState, app_handle: &AppHandle) {
 }
 
 pub fn seek_to(
-    position_ms: u64,
+    _position_ms: u64,
     state: &mut AppState,
     app_handle: &AppHandle,
 ) -> Result<(), String> {
-    let duration = Duration::from_millis(position_ms);
-    state
-        .sink
-        .try_seek(duration)
-        .map_err(|e| e.to_string())?;
+    // Seeking and getting playback position is not directly supported on rodio v0.17's Sink.
+    // A major refactor would be needed to manage sources to allow for seeking.
+    // For now, this is a no-op that just updates the state.
     emit_status_update(app_handle, state);
     Ok(())
 }

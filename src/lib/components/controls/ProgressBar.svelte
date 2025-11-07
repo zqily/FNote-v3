@@ -4,17 +4,14 @@
 	import { invoke } from '@tauri-apps/api/tauri';
 
 	let progress = 0;
-	let duration = 0;
-	let currentSong: Song | undefined;
 	let isSeeking = false;
 
-	playerStore.subscribe((state) => {
-		if (!isSeeking) {
-			progress = state.current_time_ms;
-		}
-		currentSong = state.songs.find((s) => s.id === state.current_song_id);
-		duration = currentSong?.duration_ms || 0;
-	});
+	$: currentSong = $playerStore.songs.find((s) => s.id === $playerStore.current_song_id);
+	$: duration = currentSong?.duration_ms || 0;
+
+	$: if (!isSeeking) {
+		progress = $playerStore.current_time_ms;
+	}
 
 	function formatTime(ms: number) {
 		if (isNaN(ms)) ms = 0;
