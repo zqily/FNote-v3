@@ -20,10 +20,12 @@ pub async fn upload_folder(state: State<'_, Arc<Mutex<AppState>>>, app_handle: A
 
         let mut state_guard = state.inner().lock().unwrap();
         
-        // Stop playback and clear queue
+        // Stop playback, clear queue, and reset time tracking
         state_guard.sink.stop();
         state_guard.current_song_id = None;
         state_guard.is_playing = false;
+        state_guard.elapsed_ms = 0;
+        state_guard.playback_start_instant = None;
 
         state_guard.songs = songs;
 

@@ -25,6 +25,8 @@ fn main() {
         volume: 1.0,
         sink,
         stream_handle,
+        playback_start_instant: None, // Initialize new field
+        elapsed_ms: 0,                // Initialize new field
     };
 
     let app_state_arc = Arc::new(Mutex::new(app_state));
@@ -45,13 +47,23 @@ fn main() {
                              eprintln!("Error playing next song automatically: {}", e);
                          }
                     } else {
+                        // This block replaces the old PlayerStatusUpdate logic
+                        let song_duration_ms = state_guard.current_song_id
+                            .and_then(|id| state_guard.songs.get(id))
+                            .map_or(0, |s| s.duration_ms);
+
+                        let mut current_time_ms = player::get_current_time_ms(&state_guard);
+                        if song_duration_ms > 0 {
+                            current_time_ms = current_time_ms.min(song_duration_ms);
+                        }
+                        
                          let status = models::PlayerStatusUpdate {
                             songs: state_guard.songs.clone(),
                             current_song_id: state_guard.current_song_id,
                             is_playing: state_guard.is_playing && !state_guard.sink.is_paused(),
                             volume: state_guard.volume,
                             is_shuffled: state_guard.is_shuffled,
-                            current_time_ms: 0, // rodio 0.17 doesn't support get_pos on Sink
+                            current_time_ms,
                         };
                         app_handle.emit_all("player://status-update", status).unwrap();
                     }

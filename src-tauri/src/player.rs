@@ -4,19 +4,40 @@ use crate::{
     state::AppState,
 };
 use rand::seq::SliceRandom;
-use rodio::{Decoder, Sink};
+use rodio::{Decoder, Sink, Source};
 use std::fs::File;
 use std::io::BufReader;
+use std::time::{Duration, Instant};
 use tauri::{AppHandle, Manager};
 
+pub fn get_current_time_ms(state: &AppState) -> u64 {
+    if state.is_playing {
+        let elapsed_since_start = state
+            .playback_start_instant
+            .map_or(0, |instant| instant.elapsed().as_millis() as u64);
+        state.elapsed_ms + elapsed_since_start
+    } else {
+        state.elapsed_ms
+    }
+}
+
 fn emit_status_update(app_handle: &AppHandle, state: &AppState) {
+    let song_duration_ms = state.current_song_id
+        .and_then(|id| state.songs.get(id))
+        .map_or(0, |s| s.duration_ms);
+
+    let mut current_time_ms = get_current_time_ms(state);
+    if song_duration_ms > 0 {
+        current_time_ms = current_time_ms.min(song_duration_ms);
+    }
+    
     let status = PlayerStatusUpdate {
         songs: state.songs.clone(),
         current_song_id: state.current_song_id,
         is_playing: state.is_playing && !state.sink.is_paused(),
         volume: state.volume,
         is_shuffled: state.is_shuffled,
-        current_time_ms: 0, // rodio 0.17 doesn't support get_pos on Sink
+        current_time_ms,
     };
     app_handle.emit_all("player://status-update", status).unwrap();
 }
@@ -36,7 +57,11 @@ fn emit_album_art_update(app_handle: &AppHandle, song: &Song) {
     }
 }
 
-fn play_song_internal(id: usize, state: &mut AppState) -> Result<(), String> {
+fn start_playback_from(
+    id: usize,
+    position_ms: u64,
+    state: &mut AppState,
+) -> Result<(), String> {
     let song = state
         .songs
         .get(id)
@@ -44,16 +69,21 @@ fn play_song_internal(id: usize, state: &mut AppState) -> Result<(), String> {
         .clone();
 
     let file = File::open(&song.path).map_err(|e| e.to_string())?;
-    let source = Decoder::new(BufReader::new(file)).map_err(|e| e.to_string())?;
+    let source_decoder = Decoder::new(BufReader::new(file)).map_err(|e| e.to_string())?;
+
+    // Create a new source that skips to the desired position
+    let source_with_offset = source_decoder.skip_duration(Duration::from_millis(position_ms));
 
     state.sink.stop();
     let new_sink = Sink::try_new(&state.stream_handle).map_err(|e| e.to_string())?;
     state.sink = new_sink;
     state.sink.set_volume(state.volume);
-    state.sink.append(source);
+    state.sink.append(source_with_offset);
 
     state.current_song_id = Some(id);
     state.is_playing = true;
+    state.elapsed_ms = position_ms;
+    state.playback_start_instant = Some(Instant::now());
     state.sink.play();
 
     Ok(())
@@ -64,7 +94,7 @@ pub fn play_song(
     state: &mut AppState,
     app_handle: &AppHandle,
 ) -> Result<(), String> {
-    play_song_internal(id, state)?;
+    start_playback_from(id, 0, state)?;
     if let Some(song) = state.songs.get(id) {
         emit_album_art_update(app_handle, song);
     }
@@ -74,12 +104,16 @@ pub fn play_song(
 
 pub fn toggle_playback(state: &mut AppState, app_handle: &AppHandle) {
     if state.current_song_id.is_some() {
-        if state.sink.is_paused() {
+        if state.sink.is_paused() { // Resuming playback
             state.sink.play();
             state.is_playing = true;
-        } else {
+            state.playback_start_instant = Some(Instant::now());
+        } else { // Pausing playback
             state.sink.pause();
             state.is_playing = false;
+            let elapsed_since_start = state.playback_start_instant.map_or(0, |i| i.elapsed().as_millis() as u64);
+            state.elapsed_ms += elapsed_since_start;
+            state.playback_start_instant = None;
         }
     }
     emit_status_update(app_handle, state);
@@ -128,10 +162,12 @@ pub fn next_song(state: &mut AppState, app_handle: &AppHandle) -> Result<(), Str
     if let Some(next_id) = get_next_song_id(state) {
         play_song(next_id, state, app_handle)?;
     } else {
-        // Stop playback if no next song
+        // Stop playback and reset state if no next song
         state.sink.stop();
         state.is_playing = false;
         state.current_song_id = None;
+        state.elapsed_ms = 0;
+        state.playback_start_instant = None;
         emit_status_update(app_handle, state);
     }
     Ok(())
@@ -151,13 +187,36 @@ pub fn set_volume(volume: f32, state: &mut AppState, app_handle: &AppHandle) {
 }
 
 pub fn seek_to(
-    _position_ms: u64,
+    position_ms: u64,
     state: &mut AppState,
     app_handle: &AppHandle,
 ) -> Result<(), String> {
-    // Seeking and getting playback position is not directly supported on rodio v0.17's Sink.
-    // A major refactor would be needed to manage sources to allow for seeking.
-    // For now, this is a no-op that just updates the state.
+    if let Some(current_id) = state.current_song_id {
+        let song_duration = state.songs.get(current_id).map_or(0, |s| s.duration_ms);
+        let seek_position_ms = position_ms.min(song_duration);
+        let seek_duration = Duration::from_millis(seek_position_ms);
+
+        if state.sink.try_seek(seek_duration).is_ok() {
+            // If seek is successful, update our manual time tracking state
+            state.elapsed_ms = seek_position_ms;
+            if state.is_playing {
+                // Reset the instant from which we measure elapsed time
+                state.playback_start_instant = Some(Instant::now());
+            }
+        } else {
+            // Fallback for when seek is not supported or fails
+            eprintln!("Native seek failed. Falling back to recreating the audio sink.");
+            let was_playing = state.is_playing;
+            start_playback_from(current_id, seek_position_ms, state)?;
+            if !was_playing {
+                state.sink.pause();
+                state.is_playing = false;
+                state.playback_start_instant = None;
+            }
+        }
+    }
+    
+    // Emit an update immediately to make the UI feel responsive
     emit_status_update(app_handle, state);
     Ok(())
 }

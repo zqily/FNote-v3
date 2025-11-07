@@ -24,6 +24,11 @@
 	function handleSeek(event: Event) {
 		const input = event.currentTarget as HTMLInputElement;
 		const newPosition = Number(input.value);
+
+		// Optimistically update the store. This prevents the progress bar from
+		// jumping back to its old position while waiting for the backend confirmation.
+		playerStore.update((store) => ({ ...store, current_time_ms: newPosition }));
+
 		invoke('seek_to', { positionMs: newPosition });
 		isSeeking = false;
 	}
