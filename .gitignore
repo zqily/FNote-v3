@@ -4,3 +4,5 @@ target/
 *.log
 *.
 .svelte-kit/
+package-lock.json
+Cargo.lock
