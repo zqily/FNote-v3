@@ -2,6 +2,7 @@
 	import { Shuffle, SkipBack, Play, Pause, SkipForward, Repeat } from 'lucide-svelte';
 	import { playerStore } from '$lib/stores/playerStore';
 	import { invoke } from '@tauri-apps/api/tauri';
+	import { fade } from 'svelte/transition';
 
 	$: isPlaying = $playerStore.is_playing;
 	$: isShuffled = $playerStore.is_shuffled;
@@ -57,31 +58,43 @@
 	</button>
 	<button
 		on:click={() => invoke('toggle_repeat_mode')}
-		class="text-gray-400 hover:text-white"
+		class="relative flex h-6 w-6 items-center justify-center text-gray-400 hover:text-white"
 		class:text-green-500={repeatMode !== 'Off'}
 		title={'Repeat: ' + repeatMode}
 	>
 		<div
-			class="relative w-5 h-5 flex items-center justify-center"
+			class="flex items-center justify-center"
 			on:animationend={onAnimationEnd}
 			class:animate-spin-cw={animateClass === 'animate-spin-cw'}
 			class:animate-spin-ccw={animateClass === 'animate-spin-ccw'}
 		>
 			<Repeat size={20} />
-
-			{#if repeatMode === 'Playlist'}
-				<span
-					class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-green-500 rounded-full"
-				/>
-			{/if}
-
-			{#if repeatMode === 'Single'}
-				<span
-					class="absolute -top-1 -right-1.5 flex items-center justify-center w-3.5 h-3.5 text-[10px] font-bold bg-green-500 text-black rounded-full leading-none"
-					>1</span
-				>
-			{/if}
 		</div>
+
+		{#if repeatMode === 'Playlist'}
+			<span
+				transition:fade={{ duration: 150 }}
+				class="pointer-events-none absolute -bottom-1.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-green-500"
+			/>
+		{/if}
+
+		{#if repeatMode === 'Single'}
+			<div
+				transition:fade={{ duration: 150 }}
+				class="pointer-events-none absolute -right-1.5 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-green-500 text-black"
+			>
+				<svg viewBox="0 0 24 24" fill="currentColor" class="h-full w-full">
+					<text
+						x="50%"
+						y="53%"
+						dominant-baseline="middle"
+						text-anchor="middle"
+						font-size="16"
+						font-weight="bold">1</text
+					>
+				</svg>
+			</div>
+		{/if}
 	</button>
 </div>
 
@@ -91,7 +104,7 @@
 			transform: rotate(0deg);
 		}
 		to {
-			transform: rotate(360deg);
+			transform: rotate(180deg);
 		}
 	}
 	@keyframes spin-ccw {
@@ -99,7 +112,7 @@
 			transform: rotate(0deg);
 		}
 		to {
-			transform: rotate(-360deg);
+			transform: rotate(-180deg);
 		}
 	}
 	.animate-spin-cw {
