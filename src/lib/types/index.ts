@@ -13,5 +13,6 @@ export interface PlayerStatusUpdate {
   is_playing: boolean;
   volume: number;
   is_shuffled: boolean;
+  repeat_mode: 'Off' | 'Playlist' | 'Single';
   current_time_ms: number;
 }

@@ -1,4 +1,4 @@
-use crate::models::Song;
+use crate::models::{RepeatMode, Song};
 use rodio::{OutputStreamHandle, Sink};
 use std::time::Instant;
 
@@ -7,6 +7,7 @@ pub struct AppState {
     pub current_song_id: Option<usize>,
     pub is_playing: bool,
     pub is_shuffled: bool,
+    pub repeat_mode: RepeatMode,
     pub volume: f32,
     pub sink: Sink,
     pub stream_handle: OutputStreamHandle,

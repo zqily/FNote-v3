@@ -1,5 +1,13 @@
 use serde::{Serialize, Deserialize};
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Default)]
+pub enum RepeatMode {
+    #[default]
+    Off,
+    Playlist,
+    Single,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Song {
     pub id: usize,
@@ -17,5 +25,6 @@ pub struct PlayerStatusUpdate {
     pub is_playing: bool,
     pub volume: f32,
     pub is_shuffled: bool,
+    pub repeat_mode: RepeatMode,
     pub current_time_ms: u64,
 }

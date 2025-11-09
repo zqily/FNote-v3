@@ -8,6 +8,7 @@ const initialState: PlayerStatusUpdate = {
   is_playing: false,
   volume: 1.0,
   is_shuffled: false,
+  repeat_mode: 'Off',
   current_time_ms: 0,
 };
 

@@ -22,6 +22,7 @@ fn main() {
         current_song_id: None,
         is_playing: false,
         is_shuffled: false,
+        repeat_mode: Default::default(),
         volume: 1.0,
         sink,
         stream_handle,
@@ -43,9 +44,7 @@ fn main() {
                     let mut state_guard = state_clone.lock().unwrap();
 
                     if state_guard.is_playing && state_guard.sink.empty() {
-                         if let Err(e) = player::next_song(&mut state_guard, &app_handle) {
-                             eprintln!("Error playing next song automatically: {}", e);
-                         }
+                         player::handle_track_finished(&mut state_guard, &app_handle);
                     } else {
                         // This block replaces the old PlayerStatusUpdate logic
                         let song_duration_ms = state_guard.current_song_id
@@ -63,6 +62,7 @@ fn main() {
                             is_playing: state_guard.is_playing && !state_guard.sink.is_paused(),
                             volume: state_guard.volume,
                             is_shuffled: state_guard.is_shuffled,
+                            repeat_mode: state_guard.repeat_mode,
                             current_time_ms,
                         };
                         app_handle.emit_all("player://status-update", status).unwrap();
@@ -81,6 +81,7 @@ fn main() {
             commands::set_volume,
             commands::seek_to,
             commands::toggle_shuffle,
+            commands::toggle_repeat_mode,
             commands::get_album_art,
         ])
         .run(tauri::generate_context!())

@@ -1,6 +1,6 @@
 use crate::{
     library,
-    models::{PlayerStatusUpdate, Song},
+    models::{PlayerStatusUpdate, RepeatMode, Song},
     state::AppState,
 };
 use rand::seq::SliceRandom;
@@ -37,6 +37,7 @@ fn emit_status_update(app_handle: &AppHandle, state: &AppState) {
         is_playing: state.is_playing && !state.sink.is_paused(),
         volume: state.volume,
         is_shuffled: state.is_shuffled,
+        repeat_mode: state.repeat_mode,
         current_time_ms,
     };
     app_handle.emit_all("player://status-update", status).unwrap();
@@ -224,4 +225,46 @@ pub fn seek_to(
 pub fn toggle_shuffle(state: &mut AppState, app_handle: &AppHandle) {
     state.is_shuffled = !state.is_shuffled;
     emit_status_update(app_handle, state);
+}
+
+pub fn toggle_repeat_mode(state: &mut AppState, app_handle: &AppHandle) {
+    state.repeat_mode = match state.repeat_mode {
+        RepeatMode::Off => RepeatMode::Playlist,
+        RepeatMode::Playlist => RepeatMode::Single,
+        RepeatMode::Single => RepeatMode::Off,
+    };
+    emit_status_update(app_handle, state);
+}
+
+pub fn handle_track_finished(state: &mut AppState, app_handle: &AppHandle) {
+    match state.repeat_mode {
+        RepeatMode::Off => {
+            state.sink.stop();
+            state.is_playing = false;
+            state.current_song_id = None;
+            state.elapsed_ms = 0;
+            state.playback_start_instant = None;
+            emit_status_update(app_handle, state);
+        }
+        RepeatMode::Playlist => {
+            if let Err(e) = next_song(state, app_handle) {
+                eprintln!("Error playing next song automatically: {}", e);
+            }
+        }
+        RepeatMode::Single => {
+            if let Some(id) = state.current_song_id {
+                if let Err(e) = play_song(id, state, app_handle) {
+                    eprintln!("Error re-playing song: {}", e);
+                }
+            } else {
+                // Behave like Off if there's no song for some reason
+                state.sink.stop();
+                state.is_playing = false;
+                state.current_song_id = None;
+                state.elapsed_ms = 0;
+                state.playback_start_instant = None;
+                emit_status_update(app_handle, state);
+            }
+        }
+    }
 }

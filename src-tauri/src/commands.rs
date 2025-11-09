@@ -35,6 +35,7 @@ pub async fn upload_folder(state: State<'_, Arc<Mutex<AppState>>>, app_handle: A
             is_playing: false,
             volume: state_guard.volume,
             is_shuffled: state_guard.is_shuffled,
+            repeat_mode: state_guard.repeat_mode,
             current_time_ms: 0,
         };
         app_handle.emit_all("player://status-update", status).unwrap();
@@ -87,6 +88,14 @@ pub async fn toggle_shuffle(state: State<'_, Arc<Mutex<AppState>>>, app_handle: 
     player::toggle_shuffle(&mut state_guard, &app_handle);
     Ok(())
 }
+
+#[tauri::command]
+pub async fn toggle_repeat_mode(state: State<'_, Arc<Mutex<AppState>>>, app_handle: AppHandle) -> CommandResult<()> {
+    let mut state_guard = state.inner().lock().unwrap();
+    player::toggle_repeat_mode(&mut state_guard, &app_handle);
+    Ok(())
+}
+
 
 #[tauri::command]
 pub async fn get_album_art(song_id: usize, state: State<'_, Arc<Mutex<AppState>>>) -> CommandResult<Option<String>> {
