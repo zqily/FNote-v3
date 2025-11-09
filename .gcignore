@@ -1,15 +1,6 @@
-# This file works just like .gitignore.
-# Add file or folder patterns below to exclude them from the version snapshot.
-# This is a good place for rules specific to this tool.
-#
-# --- EXAMPLES ---
-#
-# Ignore all log files:
-# *.log
-#
-# Ignore a specific temporary folder:
-# temp_data/
-#
-# Ignore a specific file:
-# notes_for_myself.txt
-
+assets/
+icons/
+*.ico
+*.webp
+*.png
+*.svg
