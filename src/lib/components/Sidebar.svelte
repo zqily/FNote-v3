@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Search, Plus, Music, List, Cog, ListFilter } from 'lucide-svelte';
+	import { Search, Plus, Music, List, Settings, ListFilter } from 'lucide-svelte';
 	import { store } from '$lib/store';
 </script>
 
-<aside class="w-80 flex-shrink-0 bg-zinc-900 p-2 flex flex-col space-y-2">
+<aside class="w-80 flex-shrink-0 bg-zinc-950 flex flex-col">
 	<!-- Top Section -->
 	<div class="bg-zinc-950 rounded-lg p-4 space-y-4">
 		<div class="flex items-center space-x-2">
@@ -49,7 +49,11 @@
 							class:border-yellow-400={$store.activePlaylistId === playlist.id}
 							class:border-transparent={$store.activePlaylistId !== playlist.id}
 							class:text-white={$store.activePlaylistId === playlist.id}
+							class:bg-gradient-to-r={$store.activePlaylistId === playlist.id}
+							class:from-zinc-800={$store.activePlaylistId === playlist.id}
+							class:to-zinc-950={$store.activePlaylistId === playlist.id}
 							class:text-zinc-400={$store.activePlaylistId !== playlist.id}
+							class:hover:bg-zinc-800={$store.activePlaylistId !== playlist.id}
 							class:hover:text-white={$store.activePlaylistId !== playlist.id}
 							on:click={() => store.selectPlaylist(playlist.id)}
 						>
@@ -102,7 +106,7 @@
 			<button
 				class="w-full flex items-center space-x-3 text-zinc-400 hover:text-white transition-colors px-2 py-1.5 rounded-md text-sm font-medium"
 			>
-				<Cog size={16} />
+				<Settings size={16} />
 				<span>Settings</span>
 			</button>
 		</div>

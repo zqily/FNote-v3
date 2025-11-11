@@ -10,7 +10,7 @@
 	});
 </script>
 
-<div class="h-screen w-screen bg-black text-neutral-200 flex overflow-hidden font-sans">
+<div class="h-screen w-screen bg-zinc-950 text-neutral-200 flex overflow-hidden font-sans">
 	<Sidebar />
 
 	<!-- Main content area wrapper -->

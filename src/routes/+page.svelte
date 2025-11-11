@@ -10,7 +10,8 @@
 		Volume2,
 		Volume1,
 		VolumeX,
-		Maximize2
+		Minimize2,
+		Bookmark
 	} from 'lucide-svelte';
 	import { store } from '$lib/store';
 
@@ -32,9 +33,9 @@
 </script>
 
 <div
-	class="h-full bg-gradient-to-b from-zinc-800 to-zinc-950/50 m-2 rounded-lg flex flex-col items-center justify-center p-8 relative"
+	class="h-full bg-zinc-900 m-6 rounded-lg flex flex-col items-center justify-center p-8 relative border border-zinc-800"
 >
-	<div class="w-full max-w-sm aspect-square bg-zinc-900 rounded-lg shadow-2xl mb-8">
+	<div class="w-full max-w-sm aspect-square bg-zinc-950 rounded-lg shadow-2xl mb-8">
 		{#if song?.albumArtUrl}
 			<img
 				src={song.albumArtUrl}
@@ -84,7 +85,7 @@
 				<Shuffle size={20} />
 			</button>
 			<button class="text-zinc-300 hover:text-white transition-colors" title="Previous Track">
-				<SkipBack size={24} fill="currentColor" />
+				<SkipBack size={24} />
 			</button>
 			<button
 				on:click={store.togglePlayback}
@@ -92,13 +93,13 @@
 				title={pb.isPlaying ? 'Pause' : 'Play'}
 			>
 				{#if pb.isPlaying}
-					<Pause size={28} fill="currentColor" />
+					<Pause size={28} />
 				{:else}
-					<Play size={28} fill="currentColor" class="ml-1" />
+					<Play size={28} />
 				{/if}
 			</button>
 			<button class="text-zinc-300 hover:text-white transition-colors" title="Next Track">
-				<SkipForward size={24} fill="currentColor" />
+				<SkipForward size={24} />
 			</button>
 			<button
 				on:click={store.cycleLoopMode}
@@ -115,33 +116,39 @@
 				{/if}
 			</button>
 
-			<!-- Volume Control -->
-			<div class="absolute right-0 flex items-center space-x-2">
-				<button class="text-zinc-400 hover:text-white">
-					{#if pb.volume > 0.5}
-						<Volume2 size={20} />
-					{:else if pb.volume > 0}
-						<Volume1 size={20} />
-					{:else}
-						<VolumeX size={20} />
-					{/if}
+			<!-- Right Side Controls -->
+			<div class="absolute right-0 flex items-center space-x-4">
+				<button class="text-zinc-400 hover:text-white transition-colors" title="Bookmark">
+					<Bookmark size={20} />
 				</button>
-				<input
-					type="range"
-					min="0"
-					max="1"
-					step="0.01"
-					value={pb.volume}
-					on:input={handleVolumeChange}
-					class="w-24 h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-white"
-				/>
+				<!-- Volume Control -->
+				<div class="group flex items-center space-x-2">
+					<button class="text-zinc-400 hover:text-white">
+						{#if pb.volume > 0.5}
+							<Volume2 size={20} />
+						{:else if pb.volume > 0}
+							<Volume1 size={20} />
+						{:else}
+							<VolumeX size={20} />
+						{/if}
+					</button>
+					<input
+						type="range"
+						min="0"
+						max="1"
+						step="0.01"
+						value={pb.volume}
+						on:input={handleVolumeChange}
+						class="w-24 h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-white scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"
+					/>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- Fullscreen button placeholder -->
+	<!-- Minimize button -->
 	<button class="absolute bottom-4 right-4 text-zinc-500 hover:text-white transition-colors">
-		<Maximize2 size={18} />
+		<Minimize2 size={18} />
 	</button>
 </div>
 
