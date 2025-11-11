@@ -1,0 +1,26 @@
+{
+  "name": "fnote",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri dev",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/kit": "^2.5.5",
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "svelte": "^4.2.12",
+    "tailwindcss": "^3.4.3",
+    "vite": "^5.2.8",
+    "@tauri-apps/cli": "^1.5.12",
+    "@tauri-apps/api": "^1.5.3"
+  },
+  "type": "module"
+}
