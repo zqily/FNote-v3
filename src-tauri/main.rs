@@ -124,7 +124,7 @@ async fn select_playlist(id: u32, state: State<'_, AppStateManager>) -> Result<(
 fn main() {
     // Create mock data for initial startup
     let mock_songs = vec![
-        Song { id: 1, title: "Feel It (From \"Invincible\")".to_string(), artist: "d4vd".to_string(), duration_secs: 217, album_art_url: "https://i.scdn.co/image/ab67616d0000b27303351d33b47f07897e937397".to_string() },
+        Song { id: 1, title: "Feel It (From \"Invincible\")".to_string(), artist: "d4vd".to_string(), duration_secs: 157, album_art_url: "https://i.scdn.co/image/ab67616d0000b27303351d33b47f07897e937397".to_string() },
         Song { id: 2, title: "Doechii - Anxiety (Visualizer)".to_string(), artist: "Doechii".to_string(), duration_secs: 185, album_art_url: "".to_string() },
         Song { id: 3, title: "void (super slowed)".to_string(), artist: "isq".to_string(), duration_secs: 240, album_art_url: "".to_string() },
         Song { id: 4, title: "Can't Hold Me Down".to_string(), artist: "Doodles, Lil Wayne, Lil Yachty, Kyle Richh...".to_string(), duration_secs: 198, album_art_url: "".to_string() },
@@ -145,7 +145,8 @@ fn main() {
         playback: PlaybackState {
             is_playing: false,
             current_song_id: Some(1),
-            progress_secs: 48,
+
+           progress_secs: 148,
             volume: 0.75,
             is_shuffled: false,
             loop_mode: LoopMode::None,

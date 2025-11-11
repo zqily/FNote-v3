@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Search, Plus } from 'lucide-svelte';
+	import { Search, Plus, Music, List, Cog, ListFilter } from 'lucide-svelte';
 	import { store } from '$lib/store';
 </script>
 
@@ -12,22 +12,25 @@
 		</div>
 		<button
 			on:click={store.importSongs}
-			class="w-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-neutral-200 font-semibold py-2 px-4 rounded-md flex items-center justify-center space-x-2"
+			class="w-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-neutral-200 font-semibold py-2 px-4 rounded-md flex items-center justify-center"
 		>
 			<span>Import Songs</span>
 		</button>
 	</div>
 
 	<!-- Main List Section -->
-	<div class="bg-zinc-950 rounded-lg p-2 flex-1 flex flex-col min-h-0">
+	<div class="bg-zinc-950 rounded-lg p-2 flex-1 flex flex-col min-h-0 relative">
 		<!-- Filter -->
 		<div class="relative p-2">
 			<Search class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
 			<input
 				type="text"
 				placeholder="Filter current list..."
-				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-4 py-1.5 text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-8 py-1.5 text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none"
 			/>
+			<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white">
+				<ListFilter size={16} />
+			</button>
 		</div>
 
 		<!-- Playlists -->
@@ -42,14 +45,16 @@
 				{#each $store.playlists as playlist (playlist.id)}
 					<li>
 						<button
-							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors"
-							class:bg-zinc-800={$store.activePlaylistId === playlist.id}
+							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 border-l-2"
+							class:border-yellow-400={$store.activePlaylistId === playlist.id}
+							class:border-transparent={$store.activePlaylistId !== playlist.id}
 							class:text-white={$store.activePlaylistId === playlist.id}
 							class:text-zinc-400={$store.activePlaylistId !== playlist.id}
-							class:hover:bg-zinc-800={$store.activePlaylistId !== playlist.id}
+							class:hover:text-white={$store.activePlaylistId !== playlist.id}
 							on:click={() => store.selectPlaylist(playlist.id)}
 						>
-							{playlist.name}
+							<Music size={16} />
+							<span>{playlist.name}</span>
 						</button>
 					</li>
 				{/each}
@@ -60,26 +65,27 @@
 		<hr class="border-zinc-800 mx-2" />
 
 		<!-- Songs List -->
-		<div class="flex-1 flex flex-col min-h-0">
+		<div class="flex-1 flex flex-col min-h-0 pb-12">
 			{#if $store.activePlaylist}
-				<div class="px-2 pt-4 pb-2">
-					<h3 class="text-sm font-semibold text-zinc-300">
-						Songs in <span class="text-white">{$store.activePlaylist.name}</span>
+				<div class="px-2 pt-4 pb-2 flex justify-between items-center">
+					<h3 class="text-xs font-bold uppercase text-zinc-400 tracking-wider">
+						Songs in {$store.activePlaylist.name}
 					</h3>
+					<button class="text-zinc-400 hover:text-white transition-colors" title="List options">
+						<List size={18} />
+					</button>
 				</div>
 			{/if}
 
 			<div class="flex-1 overflow-y-auto pr-1">
 				<ul>
 					{#each $store.activePlaylistSongs as song (song.id)}
-						<li
-							class="px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer"
-							class:bg-zinc-800={song.id === $store.currentSong?.id}
-						>
+						<li class="px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer">
 							<p
 								class="font-medium text-sm truncate"
 								class:text-yellow-400={song.id === $store.currentSong?.id}
-								class:text-neutral-200={song.id !== $store.currentSong?.id}
+								class:text-white={song.id === $store.currentSong?.id}
+								class:text-neutral-200={song.id !== $store.currentSong?.id && !($store.activePlaylistId === 2 && song.id === 4)}
 							>
 								{song.title}
 							</p>
@@ -88,6 +94,17 @@
 					{/each}
 				</ul>
 			</div>
+		</div>
+
+		<!-- Settings -->
+		<div class="absolute bottom-0 left-0 right-0 p-2 bg-zinc-950">
+			<hr class="border-zinc-800 mx-2 mb-2" />
+			<button
+				class="w-full flex items-center space-x-3 text-zinc-400 hover:text-white transition-colors px-2 py-1.5 rounded-md text-sm font-medium"
+			>
+				<Cog size={16} />
+				<span>Settings</span>
+			</button>
 		</div>
 	</div>
 </aside>
