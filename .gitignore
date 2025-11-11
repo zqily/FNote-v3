@@ -15,5 +15,5 @@ Cargo.lock
 versions/
 target/
 *.sqlite
-sketch.png
-UI.webp
+*.webp
+*.png
