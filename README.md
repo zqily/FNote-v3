@@ -78,7 +78,7 @@ To run FNote v3 locally, you need to have Rust, Node.js (with npm), and the requ
 ```bash
 # 1. Clone the repository
 git clone https://github.com/zqily/FNote-v3.git
-cd fnote
+cd FNote-v3
 
 # 2. Install SvelteKit dependencies
 npm install
