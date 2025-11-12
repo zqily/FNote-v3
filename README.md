@@ -1,7 +1,7 @@
 <div align="center">
 <img src="/github/fnote.png" alt="FNote Logo" width="200"/>
 <h1>FNote </h1>
-<p><strong>Your Personal, Offline-First Music Library. Built for Creators, Curators, and You.</strong></p>
+<h3><strong>Your Personal, Offline-First Music Library. Built for Creators, Curators, and You.</strong></h3>
 A modern, performant, and feature-rich cross-platform music player built for the desktop. FNote is designed to be fast, minimal, and secure, powered by Rust and Tauri.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
