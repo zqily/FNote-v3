@@ -1,3 +1,5 @@
+![FNote icon.](/github/fnote.png)
+
 # FNote v3: The Lightweight Desktop Music Player
 
 A modern, performant, and feature-rich cross-platform music player built for the desktop. FNote is designed to be fast, minimal, and secure, powered by Rust and Tauri.
