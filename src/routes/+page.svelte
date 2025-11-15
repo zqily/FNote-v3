@@ -90,7 +90,7 @@
 					class="flex items-center justify-center space-x-4 transition-transform duration-200"
 					style:transform={volumeHover ? 'translateX(-13px)' : 'translateX(0)'}
 				>
-					<button class="text-zinc-400 hover:text-white transition-colors" title="Bookmark">
+					<button class="text-zinc-400 hover:text-accent transition-colors" title="Bookmark">
 						<Bookmark size={20} />
 					</button>
 					<button
@@ -98,17 +98,17 @@
 						class="transition-colors"
 						class:text-accent={pb.isShuffled}
 						class:text-zinc-400={!pb.isShuffled}
-						class:hover:text-white={!pb.isShuffled}
+						class:hover:text-accent={!pb.isShuffled}
 						title="Shuffle"
 					>
 						<Shuffle size={20} />
 					</button>
-					<button class="text-zinc-300 hover:text-white transition-colors" title="Previous Track">
+					<button class="text-zinc-300 hover:text-accent transition-colors" title="Previous Track">
 						<SkipBack size={24} />
 					</button>
 					<button
 						on:click={store.togglePlayback}
-						class={`w-14 h-14 flex items-center justify-center bg-accent text-black rounded-full hover:bg-green-400 transition-all duration-500 ease-in-out ${!pb.isPlaying ? 'shadow-lg' : ''} ${pb.isPlaying ? 'shadow-[0_8px_32px_theme(colors.accent/0.5)]' : ''}`}
+						class={`w-14 h-14 flex items-center justify-center bg-accent text-black rounded-full hover:brightness-110 transition-all duration-500 ease-in-out ${!pb.isPlaying ? 'shadow-lg' : ''} ${pb.isPlaying ? 'shadow-[0_8px_32px_theme(colors.accent/0.5)]' : ''}`}
 						title={pb.isPlaying ? 'Pause' : 'Play'}
 					>
 						{#if pb.isPlaying}
@@ -117,7 +117,7 @@
 							<Play size={28} />
 						{/if}
 					</button>
-					<button class="text-zinc-300 hover:text-white transition-colors" title="Next Track">
+					<button class="text-zinc-300 hover:text-accent transition-colors" title="Next Track">
 						<SkipForward size={24} />
 					</button>
 					<button
@@ -125,7 +125,7 @@
 						class="transition-colors"
 						class:text-accent={pb.loopMode !== 'none'}
 						class:text-zinc-400={pb.loopMode === 'none'}
-						class:hover:text-white={pb.loopMode === 'none'}
+						class:hover:text-accent={pb.loopMode === 'none'}
 						title="Loop Mode: {pb.loopMode}"
 					>
 						{#if pb.loopMode === 'single'}
@@ -142,7 +142,7 @@
 						on:mouseenter={() => (volumeHover = true)}
 						on:mouseleave={() => (volumeHover = false)}
 					>
-						<button class="text-zinc-400 hover:text-white">
+						<button class="text-zinc-400 hover:text-accent">
 							{#if pb.volume > 0.5}
 								<Volume2 size={20} />
 							{:else if pb.volume > 0}
@@ -158,7 +158,7 @@
 							step="0.01"
 							value={pb.volume}
 							on:input={handleVolumeChange}
-							class="h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-white transition-all duration-200"
+							class="h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-accent transition-all duration-200"
 							class:w-24={volumeHover}
 							class:w-0={!volumeHover}
 							class:opacity-100={volumeHover}
@@ -172,7 +172,7 @@
 	</div>
 
 	<!-- Minimize button (positioned relative to the main container) -->
-	<button class="absolute bottom-4 right-4 z-10 text-zinc-500 hover:text-white transition-colors">
+	<button class="absolute bottom-4 right-4 z-10 text-zinc-500 hover:text-accent transition-colors">
 		<Minimize2 size={18} />
 	</button>
 </div>
@@ -183,13 +183,13 @@
 		appearance: none;
 		width: 14px;
 		height: 14px;
-		background: white;
+		background: var(--color-accent);
 		border-radius: 50%;
 	}
 	.progress-bar::-moz-range-thumb {
 		width: 14px;
 		height: 14px;
-		background: white;
+		background: var(--color-accent);
 		border-radius: 50%;
 		border: none;
 	}

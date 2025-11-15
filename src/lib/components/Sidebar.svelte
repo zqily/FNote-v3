@@ -12,7 +12,7 @@
 		</div>
 		<button
 			on:click={store.importSongs}
-			class="w-full bg-zinc-800 hover:bg-zinc-700 transition-colors text-neutral-200 font-semibold py-2 px-4 rounded-md flex items-center justify-center"
+			class="w-full bg-zinc-800 hover:bg-accent/20 hover:text-accent transition-colors text-neutral-200 font-semibold py-2 px-4 rounded-md flex items-center justify-center"
 		>
 			<span>Import Songs</span>
 		</button>
@@ -28,7 +28,7 @@
 				placeholder="Filter current list..."
 				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-8 py-1.5 text-sm focus:ring-2 focus:ring-accent focus:outline-none"
 			/>
-			<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white">
+			<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-accent">
 				<ListFilter size={16} />
 			</button>
 		</div>
@@ -37,7 +37,7 @@
 		<div class="px-2 pt-4 pb-2">
 			<div class="flex justify-between items-center mb-2">
 				<h2 class="text-xs font-bold uppercase text-zinc-400 tracking-wider">Playlists</h2>
-				<button class="text-zinc-400 hover:text-white transition-colors" title="Create new playlist">
+				<button class="text-zinc-400 hover:text-accent transition-colors" title="Create new playlist">
 					<Plus size={18} />
 				</button>
 			</div>
@@ -45,7 +45,7 @@
 				{#each $store.playlists as playlist (playlist.id)}
 					<li>
 						<button
-							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 hover:bg-zinc-800 hover:text-white {$store.activePlaylistId ===
+							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 hover:bg-zinc-800 hover:text-accent {$store.activePlaylistId ===
 							playlist.id
 								? 'text-accent bg-gradient-to-r from-accent/20 to-transparent'
 								: 'text-zinc-400'}"
@@ -69,7 +69,7 @@
 					<h3 class="text-xs font-bold uppercase text-zinc-400 tracking-wider">
 						Songs in {$store.activePlaylist.name}
 					</h3>
-					<button class="text-zinc-400 hover:text-white transition-colors" title="List options">
+					<button class="text-zinc-400 hover:text-accent transition-colors" title="List options">
 						<List size={18} />
 					</button>
 				</div>
@@ -79,12 +79,13 @@
 				<ul>
 					{#each $store.activePlaylistSongs as song (song.id)}
 						<li
-							class="px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer"
-							class:bg-accent-30={song.id === $store.currentSong?.id}
+							class={`px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer transition-colors ${
+								song.id === $store.currentSong?.id ? 'bg-accent/20' : ''
+							}`}
 						>
 							<p
 								class="font-medium text-sm truncate"
-								class:text-white={song.id === $store.currentSong?.id}
+								class:text-accent={song.id === $store.currentSong?.id}
 								class:text-neutral-200={song.id !== $store.currentSong?.id}
 							>
 								{song.title}
@@ -100,7 +101,7 @@
 		<div class="absolute bottom-0 left-0 right-0 p-2 bg-zinc-950">
 			<hr class="border-zinc-800 mx-2 mb-2" />
 			<button
-				class="w-full flex items-center space-x-3 text-zinc-400 hover:text-white transition-colors px-2 py-1.5 rounded-md text-sm font-medium"
+				class="w-full flex items-center space-x-3 text-zinc-400 hover:text-accent transition-colors px-2 py-1.5 rounded-md text-sm font-medium"
 			>
 				<Settings size={16} />
 				<span>Settings</span>
