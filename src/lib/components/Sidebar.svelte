@@ -78,19 +78,24 @@
 			<div class="flex-1 overflow-y-auto pr-1">
 				<ul>
 					{#each $store.activePlaylistSongs as song (song.id)}
-						<li
-							class={`px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer transition-colors ${
-								song.id === $store.currentSong?.id ? 'bg-accent/20' : ''
-							}`}
-						>
-							<p
-								class="font-medium text-sm truncate"
-								class:text-accent={song.id === $store.currentSong?.id}
-								class:text-neutral-200={song.id !== $store.currentSong?.id}
+						<li>
+							<button
+								type="button"
+								on:click={() => store.selectSong(song.id)}
+								class={`w-full text-left px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer transition-colors ${
+									song.id === $store.currentSong?.id ? 'bg-accent/20' : ''
+								}`}
+								aria-current={song.id === $store.currentSong?.id}
 							>
-								{song.title}
-							</p>
-							<p class="text-xs text-zinc-400 truncate">{song.artist}</p>
+								<p
+									class="font-medium text-sm truncate"
+									class:text-accent={song.id === $store.currentSong?.id}
+									class:text-neutral-200={song.id !== $store.currentSong?.id}
+								>
+									{song.title}
+								</p>
+								<p class="text-xs text-zinc-400 truncate">{song.artist}</p>
+							</button>
 						</li>
 					{/each}
 				</ul>

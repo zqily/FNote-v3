@@ -104,6 +104,15 @@ async function selectPlaylist(id: number) {
 	}
 }
 
+async function selectSong(id: number) {
+	try {
+		await invoke('select_song', { id });
+		playback.update((p) => ({ ...p, currentSongId: id }));
+	} catch (e) {
+		console.error(`Failed to select song ${id}:`, e);
+	}
+}
+
 /**
  * Simulates importing songs by opening a file dialog.
  * This is a placeholder and doesn't actually process files.
@@ -146,5 +155,6 @@ export const store = {
 	toggleShuffle,
 	setVolume,
 	selectPlaylist,
+	selectSong,
 	importSongs
 };

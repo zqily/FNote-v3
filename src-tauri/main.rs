@@ -119,6 +119,18 @@ async fn select_playlist(id: u32, state: State<'_, AppStateManager>) -> Result<(
     Ok(())
 }
 
+/// Sets the currently active song.
+#[tauri::command]
+async fn select_song(id: u32, state: State<'_, AppStateManager>) -> Result<(), ()> {
+    let mut app_state = state.0.lock().await;
+    // Check if the song exists before setting it.
+    if app_state.songs.iter().any(|s| s.id == id) {
+        app_state.playback.current_song_id = Some(id);
+    }
+    Ok(())
+}
+
+
 // --- Main Application Setup ---
 
 fn main() {
@@ -162,7 +174,8 @@ fn main() {
             cycle_loop_mode,
             toggle_shuffle,
             set_volume,
-            select_playlist
+            select_playlist,
+            select_song
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
