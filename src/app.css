@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+	:root {
+		--color-accent: #22c55e; /* Green 500 */
+	}
+
 	/* Custom, reusable scrollbar */
 	::-webkit-scrollbar {
 		width: 6px;

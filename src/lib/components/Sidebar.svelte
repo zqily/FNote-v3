@@ -26,7 +26,7 @@
 			<input
 				type="text"
 				placeholder="Filter current list..."
-				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-8 py-1.5 text-sm focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-8 py-1.5 text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
 			/>
 			<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white">
 				<ListFilter size={16} />
@@ -46,7 +46,7 @@
 					<li>
 						<button
 							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 border-l-2"
-							class:border-yellow-400={$store.activePlaylistId === playlist.id}
+							class:border-green-500={$store.activePlaylistId === playlist.id}
 							class:border-transparent={$store.activePlaylistId !== playlist.id}
 							class:text-white={$store.activePlaylistId === playlist.id}
 							class:bg-gradient-to-r={$store.activePlaylistId === playlist.id}
@@ -87,7 +87,7 @@
 						<li class="px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer">
 							<p
 								class="font-medium text-sm truncate"
-								class:text-yellow-400={song.id === $store.currentSong?.id}
+								class:text-green-500={song.id === $store.currentSong?.id}
 								class:text-white={song.id === $store.currentSong?.id}
 								class:text-neutral-200={song.id !== $store.currentSong?.id && !($store.activePlaylistId === 2 && song.id === 4)}
 							>

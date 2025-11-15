@@ -33,7 +33,9 @@
 </script>
 
 <div
-	class="h-full bg-zinc-900 m-6 rounded-lg flex flex-col items-center justify-center p-8 relative border border-zinc-800"
+	class="h-full bg-zinc-900 m-6 rounded-lg flex flex-col items-center justify-center p-8 relative border border-zinc-800 transition-shadow duration-1000 ease-in-out"
+	class:shadow-lg={pb.isPlaying}
+	style={pb.isPlaying ? 'box-shadow: 0 0 80px 10px rgba(34, 197, 94, 0.2);' : ''}
 >
 	<div class="w-full max-w-sm aspect-square bg-zinc-950 rounded-lg shadow-2xl mb-8">
 		{#if song?.albumArtUrl}
@@ -67,7 +69,7 @@
 				min="0"
 				max={song?.durationSecs ?? 100}
 				value={pb.progressSecs}
-				class="progress-bar w-full h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-yellow-400"
+				class="progress-bar w-full h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-green-500"
 			/>
 			<span>{formatTime(song?.durationSecs ?? 0)}</span>
 		</div>
@@ -77,7 +79,7 @@
 			<button
 				on:click={store.toggleShuffle}
 				class="transition-colors"
-				class:text-yellow-400={pb.isShuffled}
+				class:text-green-500={pb.isShuffled}
 				class:text-zinc-400={!pb.isShuffled}
 				class:hover:text-white={!pb.isShuffled}
 				title="Shuffle"
@@ -89,7 +91,7 @@
 			</button>
 			<button
 				on:click={store.togglePlayback}
-				class="w-14 h-14 flex items-center justify-center bg-yellow-400 text-black rounded-full hover:bg-yellow-300 transition-colors shadow-lg"
+				class={`w-14 h-14 flex items-center justify-center bg-green-500 text-black rounded-full hover:bg-green-400 transition-all duration-500 ease-in-out ${!pb.isPlaying ? 'shadow-lg' : ''} ${pb.isPlaying ? 'shadow-[0_8px_32px_theme(colors.green.500/0.5)]' : ''}`}
 				title={pb.isPlaying ? 'Pause' : 'Play'}
 			>
 				{#if pb.isPlaying}
@@ -104,7 +106,7 @@
 			<button
 				on:click={store.cycleLoopMode}
 				class="transition-colors"
-				class:text-yellow-400={pb.loopMode !== 'none'}
+				class:text-green-500={pb.loopMode !== 'none'}
 				class:text-zinc-400={pb.loopMode === 'none'}
 				class:hover:text-white={pb.loopMode === 'none'}
 				title="Loop Mode: {pb.loopMode}"
