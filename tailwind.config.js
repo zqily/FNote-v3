@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent: 'var(--color-accent)',
-      },
+        accent: '#22c55e', // equivalent to green-500
+      }
     },
   },
   plugins: [],

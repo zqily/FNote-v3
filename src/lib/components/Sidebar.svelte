@@ -26,7 +26,7 @@
 			<input
 				type="text"
 				placeholder="Filter current list..."
-				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-8 py-1.5 text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+				class="w-full bg-zinc-800 border-zinc-700 rounded-md pl-8 pr-8 py-1.5 text-sm focus:ring-2 focus:ring-accent focus:outline-none"
 			/>
 			<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white">
 				<ListFilter size={16} />
@@ -45,16 +45,14 @@
 				{#each $store.playlists as playlist (playlist.id)}
 					<li>
 						<button
-							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 border-l-2"
-							class:border-green-500={$store.activePlaylistId === playlist.id}
+							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 border-l-2 hover:bg-zinc-800 hover:text-white"
+							class:border-accent={$store.activePlaylistId === playlist.id}
 							class:border-transparent={$store.activePlaylistId !== playlist.id}
 							class:text-white={$store.activePlaylistId === playlist.id}
 							class:bg-gradient-to-r={$store.activePlaylistId === playlist.id}
-							class:from-zinc-800={$store.activePlaylistId === playlist.id}
-							class:to-zinc-950={$store.activePlaylistId === playlist.id}
+							class:from-accent-20={$store.activePlaylistId === playlist.id}
+							class:to-transparent={$store.activePlaylistId === playlist.id}
 							class:text-zinc-400={$store.activePlaylistId !== playlist.id}
-							class:hover:bg-zinc-800={$store.activePlaylistId !== playlist.id}
-							class:hover:text-white={$store.activePlaylistId !== playlist.id}
 							on:click={() => store.selectPlaylist(playlist.id)}
 						>
 							<Music size={16} />
@@ -84,12 +82,14 @@
 			<div class="flex-1 overflow-y-auto pr-1">
 				<ul>
 					{#each $store.activePlaylistSongs as song (song.id)}
-						<li class="px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer">
+						<li
+							class="px-2 py-1.5 rounded-md hover:bg-zinc-800 cursor-pointer"
+							class:bg-accent-30={song.id === $store.currentSong?.id}
+						>
 							<p
 								class="font-medium text-sm truncate"
-								class:text-green-500={song.id === $store.currentSong?.id}
 								class:text-white={song.id === $store.currentSong?.id}
-								class:text-neutral-200={song.id !== $store.currentSong?.id && !($store.activePlaylistId === 2 && song.id === 4)}
+								class:text-neutral-200={song.id !== $store.currentSong?.id}
 							>
 								{song.title}
 							</p>
