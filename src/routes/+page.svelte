@@ -18,6 +18,8 @@
 	$: song = $store.currentSong;
 	$: pb = $store.playback;
 
+	let volumeHover = false;
+
 	function formatTime(seconds: number): string {
 		const mins = Math.floor(seconds / 60);
 		const secs = Math.floor(seconds % 60)
@@ -83,56 +85,63 @@
 			</div>
 
 			<!-- Buttons -->
-			<div class="w-full flex items-center justify-center space-x-4 relative">
-				<button
-					on:click={store.toggleShuffle}
-					class="transition-colors"
-					class:text-accent={pb.isShuffled}
-					class:text-zinc-400={!pb.isShuffled}
-					class:hover:text-white={!pb.isShuffled}
-					title="Shuffle"
+			<div class="w-full flex justify-center">
+				<div
+					class="flex items-center justify-center space-x-4 transition-transform duration-200"
+					style:transform={volumeHover ? 'translateX(-13px)' : 'translateX(0)'}
 				>
-					<Shuffle size={20} />
-				</button>
-				<button class="text-zinc-300 hover:text-white transition-colors" title="Previous Track">
-					<SkipBack size={24} />
-				</button>
-				<button
-					on:click={store.togglePlayback}
-					class={`w-14 h-14 flex items-center justify-center bg-accent text-black rounded-full hover:bg-green-400 transition-all duration-500 ease-in-out ${!pb.isPlaying ? 'shadow-lg' : ''} ${pb.isPlaying ? 'shadow-[0_8px_32px_theme(colors.accent/0.5)]' : ''}`}
-					title={pb.isPlaying ? 'Pause' : 'Play'}
-				>
-					{#if pb.isPlaying}
-						<Pause size={28} />
-					{:else}
-						<Play size={28} />
-					{/if}
-				</button>
-				<button class="text-zinc-300 hover:text-white transition-colors" title="Next Track">
-					<SkipForward size={24} />
-				</button>
-				<button
-					on:click={store.cycleLoopMode}
-					class="transition-colors"
-					class:text-accent={pb.loopMode !== 'none'}
-					class:text-zinc-400={pb.loopMode === 'none'}
-					class:hover:text-white={pb.loopMode === 'none'}
-					title="Loop Mode: {pb.loopMode}"
-				>
-					{#if pb.loopMode === 'single'}
-						<Repeat1 size={20} />
-					{:else}
-						<Repeat size={20} />
-					{/if}
-				</button>
-
-				<!-- Right Side Controls -->
-				<div class="absolute right-0 flex items-center space-x-4">
 					<button class="text-zinc-400 hover:text-white transition-colors" title="Bookmark">
 						<Bookmark size={20} />
 					</button>
+					<button
+						on:click={store.toggleShuffle}
+						class="transition-colors"
+						class:text-accent={pb.isShuffled}
+						class:text-zinc-400={!pb.isShuffled}
+						class:hover:text-white={!pb.isShuffled}
+						title="Shuffle"
+					>
+						<Shuffle size={20} />
+					</button>
+					<button class="text-zinc-300 hover:text-white transition-colors" title="Previous Track">
+						<SkipBack size={24} />
+					</button>
+					<button
+						on:click={store.togglePlayback}
+						class={`w-14 h-14 flex items-center justify-center bg-accent text-black rounded-full hover:bg-green-400 transition-all duration-500 ease-in-out ${!pb.isPlaying ? 'shadow-lg' : ''} ${pb.isPlaying ? 'shadow-[0_8px_32px_theme(colors.accent/0.5)]' : ''}`}
+						title={pb.isPlaying ? 'Pause' : 'Play'}
+					>
+						{#if pb.isPlaying}
+							<Pause size={28} />
+						{:else}
+							<Play size={28} />
+						{/if}
+					</button>
+					<button class="text-zinc-300 hover:text-white transition-colors" title="Next Track">
+						<SkipForward size={24} />
+					</button>
+					<button
+						on:click={store.cycleLoopMode}
+						class="transition-colors"
+						class:text-accent={pb.loopMode !== 'none'}
+						class:text-zinc-400={pb.loopMode === 'none'}
+						class:hover:text-white={pb.loopMode === 'none'}
+						title="Loop Mode: {pb.loopMode}"
+					>
+						{#if pb.loopMode === 'single'}
+							<Repeat1 size={20} />
+						{:else}
+							<Repeat size={20} />
+						{/if}
+					</button>
+
 					<!-- Volume Control -->
-					<div class="group flex items-center space-x-2">
+					<div
+						class="flex items-center"
+						role="group"
+						on:mouseenter={() => (volumeHover = true)}
+						on:mouseleave={() => (volumeHover = false)}
+					>
 						<button class="text-zinc-400 hover:text-white">
 							{#if pb.volume > 0.5}
 								<Volume2 size={20} />
@@ -149,7 +158,12 @@
 							step="0.01"
 							value={pb.volume}
 							on:input={handleVolumeChange}
-							class="w-24 h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-white scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"
+							class="h-1 bg-zinc-600 rounded-full appearance-none cursor-pointer accent-white transition-all duration-200"
+							class:w-24={volumeHover}
+							class:w-0={!volumeHover}
+							class:opacity-100={volumeHover}
+							class:opacity-0={!volumeHover}
+							class:ml-2={volumeHover}
 						/>
 					</div>
 				</div>
