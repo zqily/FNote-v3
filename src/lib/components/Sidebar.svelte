@@ -45,14 +45,10 @@
 				{#each $store.playlists as playlist (playlist.id)}
 					<li>
 						<button
-							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 border-l-2 hover:bg-zinc-800 hover:text-white"
-							class:border-accent={$store.activePlaylistId === playlist.id}
-							class:border-transparent={$store.activePlaylistId !== playlist.id}
-							class:text-white={$store.activePlaylistId === playlist.id}
-							class:bg-gradient-to-r={$store.activePlaylistId === playlist.id}
-							class:from-accent-20={$store.activePlaylistId === playlist.id}
-							class:to-transparent={$store.activePlaylistId === playlist.id}
-							class:text-zinc-400={$store.activePlaylistId !== playlist.id}
+							class="w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center space-x-3 hover:bg-zinc-800 hover:text-white {$store.activePlaylistId ===
+							playlist.id
+								? 'text-accent bg-gradient-to-r from-accent/20 to-transparent'
+								: 'text-zinc-400'}"
 							on:click={() => store.selectPlaylist(playlist.id)}
 						>
 							<Music size={16} />

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import PlayerControls from './PlayerControls.svelte';
 	import { store } from '$lib/store';
 
 	$: song = $store.currentSong;
@@ -32,7 +31,4 @@
 			<p class="text-lg text-zinc-400 mt-1 truncate max-w-md">{song?.artist ?? '...'}</p>
 		</div>
 	</div>
-
-	<!-- Bottom Player Control Bar -->
-	<PlayerControls />
 </main>
