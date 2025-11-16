@@ -15,7 +15,7 @@ A modern, performant, and feature-rich cross-platform music player built for the
 
 FNote v3 leverages the UI/UX design of its predecessor, FNote v2, providing a beautiful, focused experience in a dedicated desktop wrapper.
 
-![FNote v3 UI Screenshot](/github/ui.png)
+![FNote v3 UI Screenshot](/github/fnote_screenshot.png)
 
 ---
 
