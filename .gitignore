@@ -1,6 +1,3 @@
-postcss.config.js
-svelte.config.js
-vite.config.js
 node_modules/
 dist/
 build/
