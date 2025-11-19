@@ -79,7 +79,7 @@ This repository currently focuses solely on the **architecture and frontend pres
 **Development Milestones:**
 - [x] **UI Complete:** Interface components based on v2 design (SvelteKit + Tailwind).
 - [x] **IPC Wired:** Frontend connected to Rust backend via Tauri commands.
-- [x] **Data Mocked:** Rust core holds mock data/state via Mutex.
+- [x] **Data Mocked:** Rust core holds mock data/state.
 - [ ] **Audio Engine:** File streaming and playback controls.
 - [ ] **Database:** Local library management.
 
