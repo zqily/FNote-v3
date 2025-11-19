@@ -1,81 +1,117 @@
 <div align="center">
-<img src="/github/fnote.png" alt="FNote Logo" width="200"/>
-<h1>FNote </h1>
-<h3><strong>Your Personal, Offline-First Music Library. Built for Creators, Curators, and You.</strong></h3>
-A modern, performant, and feature-rich cross-platform music player built for the desktop. FNote is designed to be fast, minimal, and secure, powered by Rust and Tauri.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Built with Tauri](https://img.shields.io/badge/Built%20with-Tauri-24C7E7.svg)](https://tauri.app/)
-[![Frontend: SvelteKit](https://img.shields.io/badge/Frontend-SvelteKit-FF3E00.svg)](https://kit.svelte.dev/)
-[![Current Status: Pre-Alpha](https://img.shields.io/badge/Status-Pre--Alpha-red)](https://github.com/yourusername/fnote)
+  <img src="/github/fnote.png" alt="FNote Logo" width="180" height="auto" />
+  
+  <h1>FNote v3</h1>
+  
+  <p>
+    <strong>Your Personal, Offline-First Music Library.</strong><br>
+    Built for Creators, Curators, and You.
+  </p>
+
+  <p>
+    <a href="#-user-interface-preview">View Demo</a> •
+    <a href="#-getting-started">Getting Started</a> •
+    <a href="#-the-fnote-saga-coded-by-ai">Read the Story</a>
+  </p>
+
+  <!-- Badges -->
+  <p>
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge&logo=none" alt="License" />
+    <img src="https://img.shields.io/badge/Built%20with-Tauri-24C7E7.svg?style=for-the-badge&logo=tauri&logoColor=white" alt="Tauri" />
+    <img src="https://img.shields.io/badge/Frontend-SvelteKit-FF3E00.svg?style=for-the-badge&logo=svelte&logoColor=white" alt="SvelteKit" />
+    <img src="https://img.shields.io/badge/Status-Pre--Alpha-red?style=for-the-badge" alt="Status" />
+  </p>
+
 </div>
+
+---
+
+## 📖 About
+
+**FNote** is a modern, performant, and feature-rich cross-platform music player built for the desktop. Designed to be **fast, minimal, and secure**, FNote leverages the power of Rust and the flexibility of web technologies to deliver a premium audio experience without the bloat.
+
+### Key Features (Planned)
+| ⚡️ Performance | 🔒 Security | 🎨 Experience |
+| :--- | :--- | :--- |
+| Native Rust backend for minimal memory footprint. | Offline-first architecture. Your data stays on your machine. | Beautiful, focused UI built with Tailwind CSS. |
+
 ---
 
 ## 📸 User Interface Preview
 
-FNote v3 leverages the UI/UX design of its predecessor, FNote v2, providing a beautiful, focused experience in a dedicated desktop wrapper.
+FNote v3 leverages the UI/UX design of its predecessor, providing a beautiful, focused experience in a dedicated desktop wrapper.
 
-![FNote v3 UI Screenshot](/github/fnote_screenshot.png)
+<div align="center">
+  <img src="/github/fnote_screenshot.png" alt="FNote v3 UI Screenshot" width="100%" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+</div>
 
 ---
 
 ## 📜 The FNote Saga: Coded by AI
 
-FNote v3 is the third (and hopefully final) iteration of a passion project started at the very beginning of my coding journey. What makes this project unique is its development process: **FNote has been built almost entirely using large language models (LLMs).**
+> **🤖 AI-Native Development:** FNote v3 is the third iteration of a passion project started at the beginning of my coding journey. **This project has been built almost entirely using large language models (LLMs).**
 
 After numerous attempts and valuable lessons learned, FNote v3 represents a commitment to stability, performance, and modern architecture.
 
-### Version History
+### ⏳ Version History
 
-| Version | Core Technology | UI/Frontend | Notes | Story |
-| :---: | :---: | :---: | :---: | :--- |
-| **FNote v1** | Pure Python | Tkinter | My first major project; simple, but functional. Source code lost. | [Read the full story here](https://zqil.net/projects/fnote-v1) |
-| **FNote v2** | Python (Pywebview) | Vanilla HTML/CSS/JS | Excellent UI/UX, but suffered from extreme instability, resource heaviness, and bugs. | [Read the full story here](https://zqil.net/projects/fnote-v2) |
-| **FNote v3** | Rust (Tauri) | SvelteKit / TypeScript / Tailwind | **The modern, lightweight rewrite.** Focused on performance and security to fix the flaws of v2. | Active Development |
+| Version | Core Tech | Frontend | The Story |
+| :--- | :--- | :--- | :--- |
+| **FNote v1** | `Python` | `Tkinter` | *My first major project.* Simple, functional, but source code is lost. [Read Story](https://zqil.net/projects/fnote-v1) |
+| **FNote v2** | `Python` | `Vanilla JS` | *The Designer.* Excellent UI/UX, but suffered from instability and resource heaviness. [Read Story](https://zqil.net/projects/fnote-v2) |
+| **FNote v3** | `Rust` | `SvelteKit` | **The Modern Rewrite.** Focused on performance, security, and fixing the flaws of v2. |
 
-### Why Tauri?
+### 🦀 Why Tauri?
 
-The jump to **Tauri** was crucial. By compiling the application core to efficient, memory-safe Rust, FNote v3 aims to solve the heavy footprint and instability issues that plagued FNote v2, while retaining a rapid development workflow on the frontend with SvelteKit.
+The jump to **Tauri** was crucial. By compiling the application core to efficient, memory-safe **Rust**, FNote v3 aims to solve the heavy footprint and instability issues that plagued FNote v2, while retaining a rapid development workflow on the frontend with **SvelteKit**.
 
 ---
 
-## 🚧 Current Status (Pre-Alpha)
+## 🚧 Current Status: Pre-Alpha
 
-This repository currently focuses solely on the architecture and frontend presentation.
+This repository currently focuses solely on the **architecture and frontend presentation**.
 
-**Status Summary:**
-1.  **UI Complete:** The user interface components, based heavily on the FNote v2 design, are built with SvelteKit and Tailwind CSS.
-2.  **IPC Wired:** The frontend is wired up to the Rust backend using Tauri commands (e.g., `toggle_playback`, `cycle_loop_mode`).
-3.  **Data Mocked:** The Rust core holds mock data and state management via a Mutex (for `AppState`).
+> [!WARNING]  
+> **There is currently no fully functional audio playback or file handling.** 
+> FNote v3 aims to achieve feature parity with the bug-ridden FNote v2, depending on the capabilities of current and future AI assistants.
 
-**There is currently no fully functional audio playback or file handling.** FNote v3 aims to achieve at least feature parity with the bug-ridden FNote v2, depending on the capabilities of current and future AI assistants.
+**Development Milestones:**
+- [x] **UI Complete:** Interface components based on v2 design (SvelteKit + Tailwind).
+- [x] **IPC Wired:** Frontend connected to Rust backend via Tauri commands.
+- [x] **Data Mocked:** Rust core holds mock data/state via Mutex.
+- [ ] **Audio Engine:** File streaming and playback controls.
+- [ ] **Database:** Local library management.
 
 ---
 
 ## ⚙️ Tech Stack
 
-FNote v3 leverages a modern and high-performance stack:
+FNote v3 leverages a modern, high-performance stack:
 
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Backend Core** | **Rust** | Security, performance, and low-level system interaction via Tauri. |
-| **Application Shell** | **Tauri** | Cross-platform desktop bundling and native API access. |
-| **Frontend Framework** | **SvelteKit** | Highly reactive and lightweight UI framework. |
-| **Styling** | **Tailwind CSS** | Utility-first, clean, and modern design. |
+<div align="center">
+
+| Layer | Technology | Icon | Purpose |
+| :--- | :--- | :---: | :--- |
+| **Backend** | **Rust** | <img src="https://skillicons.dev/icons?i=rust" width="20"> | Security, performance, and system interaction. |
+| **Shell** | **Tauri** | <img src="https://skillicons.dev/icons?i=tauri" width="20"> | Cross-platform bundling and native APIs. |
+| **Frontend** | **SvelteKit** | <img src="https://skillicons.dev/icons?i=svelte" width="20"> | Highly reactive and lightweight UI. |
+| **Styling** | **Tailwind** | <img src="https://skillicons.dev/icons?i=tailwind" width="20"> | Utility-first modern design. |
+
+</div>
 
 ---
 
 ## 🚀 Getting Started
 
-To run FNote v3 locally, you need to have Rust, Node.js (with npm), and the required dependencies installed.
+To run FNote v3 locally, ensure you have the prerequisites installed.
 
 ### Prerequisites
+*   [Rust](https://www.rust-lang.org/tools/install) (via `cargo`)
+*   [Node.js](https://nodejs.org/) (LTS recommended)
+*   Build tools for your OS (C++ compilers, etc.)
 
-1.  [Rust](https://www.rust-lang.org/tools/install) (with `cargo`)
-2.  [Node.js](https://nodejs.org/) (LTS recommended)
-3.  Tauri prerequisites for your target OS (usually system build tools).
-
-### Development Setup
+### Installation & Run
 
 ```bash
 # 1. Clone the repository
@@ -86,7 +122,5 @@ cd FNote-v3
 npm install
 
 # 3. Start the Tauri development server
+# This launches the Rust backend and the SvelteKit frontend with hot-reloading
 npm run tauri
-```
-
-This command compiles the Rust backend and launches the SvelteKit frontend in the Tauri webview, complete with hot-reloading for faster frontend development.
