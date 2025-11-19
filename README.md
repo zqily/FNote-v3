@@ -124,3 +124,10 @@ npm install
 # 3. Start the Tauri development server
 # This launches the Rust backend and the SvelteKit frontend with hot-reloading
 npm run tauri
+```
+
+---
+
+<div align="center">
+Made with ❤️ and 🤖 by <a href="https://github.com/zqily">Zqil</a>
+</div>
